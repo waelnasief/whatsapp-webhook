@@ -16,13 +16,22 @@ async function sendMessage(to, text) {
       body: JSON.stringify({
         messaging_product: "whatsapp",
         to: to,
+        type: "text",
         text: { body: text }
       })
     }
   );
 
   const data = await response.json();
-  console.log("Message sent:", data);
+
+  console.log("WhatsApp API status:", response.status);
+  console.log("WhatsApp API response:", JSON.stringify(data, null, 2));
+
+  if (!response.ok) {
+    throw new Error(`WhatsApp send failed: ${response.status}`);
+  }
+
+  return data;
 }
 app.get("/send", async (req, res) => {
   const to = req.query.to;
@@ -33,8 +42,8 @@ app.get("/send", async (req, res) => {
   }
 
   try {
-    await sendMessage(to, text);
-    res.send("Message sent!");
+    const result = await sendMessage(to, text);
+    res.json({ ok: true, result });
   } catch (error) {
     console.error("Send error:", error);
     res.status(500).send("Failed to send message");
