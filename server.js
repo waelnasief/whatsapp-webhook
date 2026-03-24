@@ -29,27 +29,31 @@ app.post("/webhook", async (req, res) => {
   try {
     const entry = req.body.entry?.[0];
     const changes = entry?.changes?.[0];
-    const message = changes?.value?.messages?.[0];
+    const value = changes?.value;
+    const message = value?.messages?.[0];
 
     if (message) {
       const from = message.from;
+      const messageText = message.text?.body;
 
-      console.log("Message from:", from);
+      console.log("Customer number:", from);
+      console.log("Customer message:", messageText);
 
-      // 👇 reply
       const response = await fetch(
-         `https://graph.facebook.com/v18.0/1069337116257766/messages`,
+        "https://graph.facebook.com/v22.0/1069337116257766/messages",
         {
           method: "POST",
           headers: {
-            "Authorization": `Bearer EAALkNdaYHbMBRJVdU4y3o8KQR6EfuZC1wBCHlvFZAiyme4PP3wZA7b0m7VR7y1W0ipiULfn0BEr8f9YSbscvcsG4Y7eeI3LKefM0iuALoi7VE8VFMtv8dyMZBlhroyutAXsqlO3Ob69Yy7TIGuACB1AyaXDBEAjMyHowN2JExEZANl6irJ1EWkOgCx244QL6qhQ3x2IW8ZAOzBDMStfapOOsuraKE7LRZCbzZA1s3A5PtAG0oHkePCNgwcBeVr30AmpVPaAGNMZBt5x681oSnztp2CyHh`,
+            "Authorization": "Bearer EAALkNdaYHbMBROWN9BuY8rQXnSzHCbGZCN5KSxj8H35KffGKkRb5H5UcZAZCqX1JhUZBUZA4TQFP6sP4f5zbZAUg6LbLz1cuRIH4ZCqFSnvZCAsZB4aI3TQxZADjbZCfmS181Ofn2OfLSlHQdama1YZBtoWsK8FPw3RwzdTxt9q1GA7XovwpXjAQfUvrraDyh0VDxu0IMazkPkoha6hwQS3CwY384U2S5Rv3OV4N1im2iZAmVfe3TtjjJ02d4ix1Ep1gJlvZCzcHeoxZCNGGpNXHGkGpsT7ttN76wZDZD",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             messaging_product: "whatsapp",
             to: from,
-            text: { body: "Hello 👋 Thanks for contacting us!" },
-          }),
+            text: {
+              body: "Hello 👋 Thanks for contacting us. We received your message and will reply shortly."
+            }
+          })
         }
       );
 
@@ -57,7 +61,7 @@ app.post("/webhook", async (req, res) => {
       console.log("Reply sent:", data);
     }
   } catch (err) {
-    console.error(err);
+    console.error("Auto-reply error:", err);
   }
 
   res.sendStatus(200);
