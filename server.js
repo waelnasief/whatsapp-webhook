@@ -24,6 +24,22 @@ async function sendMessage(to, text) {
   const data = await response.json();
   console.log("Message sent:", data);
 }
+app.get("/send", async (req, res) => {
+  const to = req.query.to;
+  const text = req.query.text;
+
+  if (!to || !text) {
+    return res.status(400).send("Missing 'to' or 'text'");
+  }
+
+  try {
+    await sendMessage(to, text);
+    res.send("Message sent!");
+  } catch (error) {
+    console.error("Send error:", error);
+    res.status(500).send("Failed to send message");
+  }
+});
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
