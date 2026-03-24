@@ -4,7 +4,26 @@ const app = express();
 app.use(express.json());
 
 const VERIFY_TOKEN = "wael12345";
+async function sendMessage(to, text) {
+  const response = await fetch(
+    "https://graph.facebook.com/v22.0/1069337116257766/messages",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messaging_product: "whatsapp",
+        to: to,
+        text: { body: text }
+      })
+    }
+  );
 
+  const data = await response.json();
+  console.log("Message sent:", data);
+}
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
@@ -51,7 +70,7 @@ app.post("/webhook", async (req, res) => {
             messaging_product: "whatsapp",
             to: from,
             text: {
-              body: "Hello 👋 Thanks for contacting us. We received your message and will reply shortly."
+              body: "Hello 👋 Thanks for contacting us."
             }
           })
         }
