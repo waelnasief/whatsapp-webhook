@@ -24,7 +24,7 @@ async function sendMessage(to, text) {
     {
       method: "POST",
       headers: {
-        "Authorization": "Bearer YOUR_ACCESS_TOKEN",
+        "Authorization": "Bearer EAALkNdaYHbMBRMHIsL1npll692oIAzTunsu7Y8YzVLbsZAeeKs9oDwHTqTrRwoGKBQVSg0ZCSBf0BZBVqAEqOQuiUDQZAALCmN6VTZAIsDiy3hgiMFZCc9eKuEI5UcM4060ORIHhAuZCCfnRzJxfbeN1OMD9o0fq4OBNZBrLd7Qq7YkhRVOrNz9fED1CA2qeqxZAuZAAN2qMJPi2wWQPqAZBi5mSvbZAgrsXGEAqk7YMKf3tC2r7eX0LZBcyZCjcZCvlAGLZCFFGqu9YMhjSQY8nkLpJ1cwKvwZDZD",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
