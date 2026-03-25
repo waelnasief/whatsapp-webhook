@@ -2,7 +2,21 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
+app.get("/", (req, res) => {
+  res.send(`
+    <h2>WhatsApp Dashboard</h2>
 
+    <form action="/send" method="get">
+      <label>Phone Number:</label><br/>
+      <input name="to" placeholder="965XXXXXXXX"/><br/><br/>
+
+      <label>Message:</label><br/>
+      <textarea name="text" placeholder="Write message"></textarea><br/><br/>
+
+      <button type="submit">Send Message</button>
+    </form>
+  `);
+});
 const VERIFY_TOKEN = "wael12345";
 async function sendMessage(to, text) {
   const response = await fetch(
